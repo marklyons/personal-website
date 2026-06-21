@@ -136,25 +136,21 @@ Enter the new date: (mm-dd-yy)</pre>
         captionedImages.forEach(img => {
           img.style.cursor = 'pointer';
           img.addEventListener('click', function() {
-            openImageModal(this.src, this.alt);
+            const captionElement = this.parentElement.querySelector('.caption');
+            const caption = captionElement ? captionElement.textContent : this.alt;
+            openImageModal(this.src, this.alt, caption);
           });
         });
       });
 
-      function openImageModal(imageSrc, imageAlt) {
+      function openImageModal(imageSrc, imageAlt, caption) {
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
         const modalCaption = document.getElementById('modalCaption');
 
         modalImg.src = imageSrc;
         modalImg.alt = imageAlt;
-
-        const captionElement = modalImg.parentElement.parentElement.querySelector('.caption');
-        if (captionElement) {
-          modalCaption.textContent = captionElement.textContent;
-        } else {
-          modalCaption.textContent = imageAlt;
-        }
+        modalCaption.textContent = caption || imageAlt;
 
         modal.style.display = 'block';
       }
