@@ -1,6 +1,8 @@
 <html>
   <head>
-    <title>Mark Lyons | Software Engineer | NYC</title></tit>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mark Lyons | Software Engineer | NYC</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
   </head>
   <body>
@@ -11,7 +13,7 @@
 
       <ul>
         <li>
-          <a href="Mark_Lyons_Resume_2025.pdf">Resume</a>
+          <a href="Resume.pdf">Resume</a>
         </li>
         <li>
           <a href="https://www.youtube.com/@m_k_lyons">YouTube</a>
@@ -22,10 +24,16 @@
         <li>
           <a href="https://stackoverflow.com/users/1103669/mark-lyons">StackOverflow</a>
         </li>
+        <li>
+          <a href="https://www.goodreads.com/user/show/190975958-mark-lyons">Goodreads</a>
+        </li>
       </ul>
 
       <h2>Blog</h2>
       <div id="blog-items-container">
+        <div class="blog-item">
+          <a href="blog/thinking-at-the-edge.html">Thinking at the edge</a> - June 21, 2026
+        </div>
         <div class="blog-item">
           <a href="blog/searching-family-history-telegram.html">Searching for family history as told by a WWII telegram communicating safety from son to mother</a> - July 9, 2025
         </div>
@@ -33,5 +41,391 @@
           <a href="blog/squeezing-the-most-juice-out-of-nyc.html">Squeezing the most juice out of New York City</a> - May 12, 2025
         </div>
     </div>
+
+      <h2>Bookshelf</h2>
+      <p class="bookshelf-intro">Books I've finished and reviewed on my <a href="https://www.goodreads.com/user/show/190975958-mark-lyons">Goodreads</a> are shown below. Click any book to read my review and rating. I'm a huge fan of the Everyman's Library collection so I've customized those editions to look how they look in reality. Please feel free to connect with me on Goodreads -- I'd love to see what you're reading!</p>
+      <div class="bookshelf-wrap">
+        <button type="button" id="shelfPrev" class="shelf-pager shelf-prev" aria-label="Scroll books left">&#8249;</button>
+        <div id="bookshelf" class="bookshelf" aria-label="Bookshelf of finished books"></div>
+        <button type="button" id="shelfNext" class="shelf-pager shelf-next" aria-label="Scroll books right">&#8250;</button>
+      </div>
+
+      <h2>Videos</h2>
+      <p class="youtube-intro">I sometimes publish videos to YouTube of what I'm working on or interested in at the moment. Feel free to <a href="https://www.youtube.com/@m_k_lyons/videos">follow</a>!</p>
+      <div id="youtube-grid" class="youtube-grid" aria-label="YouTube videos"></div>
+    </div>
+
+    <!-- Book Modal -->
+    <div id="bookModal" class="book-modal">
+      <div class="book-modal-content">
+        <span class="book-close-button" onclick="closeBookModal()">&times;</span>
+        <div class="book-modal-body">
+          <div class="book-modal-cover">
+            <a id="bookModalCoverLink" href="#" target="_blank" rel="noopener">
+              <img id="bookModalCover" src="" alt="">
+            </a>
+          </div>
+          <div class="book-modal-details">
+            <h3 id="bookModalTitle"></h3>
+            <div id="bookModalAuthor" class="book-modal-author"></div>
+            <div id="bookModalMeta" class="book-modal-meta"></div>
+            <div id="bookModalStars" class="book-modal-stars"></div>
+            <div id="bookModalReview" class="book-modal-review"></div>
+            <a id="bookModalLink" class="book-modal-link" href="#" target="_blank" rel="noopener">View on Goodreads &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Modal -->
+    <div id="youtubeModal" class="yt-modal">
+      <div class="yt-modal-content">
+        <span class="yt-close-button" onclick="closeYouTubeModal()">&times;</span>
+        <div class="yt-player-wrap">
+          <iframe id="youtubeFrame" src="" title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script src="books.js"></script>
+    <script>
+      (function () {
+        var shelf = document.getElementById('bookshelf');
+        if (!shelf || typeof BOOKS === 'undefined') return;
+
+        // Everyman's Library default cloth color (the most common scarlet).
+        var EVERYMAN_SCARLET = '#9d1c27';
+
+        /*
+         * Per-book overrides, keyed by (a substring of) the title.
+         *   everyman: true  -> render as an Everyman's Library spine (default)
+         *   everyman: false -> render as a generic modern spine
+         *   color: "#hex"   -> cloth color (defaults to scarlet for Everyman's books)
+         *
+         * To recolor a book, just set its color here. Books left without a color
+         * fall back to Everyman's scarlet.
+         */
+        var BOOK_OVERRIDES = {
+          // --- Modern, non-Everyman's editions ---
+          'Project Hail Mary': { everyman: false },
+          'East of Eden': { everyman: false },
+          'Careless People': { everyman: false },
+          'Second Foundation': { everyman: false },
+          'Foundation and Empire': { everyman: false },
+          'Foundation (Foundation, #1)': { everyman: false },
+          'The Count of Monte Cristo': { everyman: false },
+          'The King and Queen of Malibu': { everyman: false },
+          "Liar's Poker": { everyman: false },
+          'Carrying the Fire': { everyman: false },
+          'Zero to One': { everyman: false },
+
+          // --- Everyman's cloth colors ---
+          'The Leopard': { color: '#1e3a6e' },          // Everyman's blue (deep)
+          'The Oresteia': { color: '#a99a72' },         // tan/taupe (antiquity)
+          'Persuasion': { color: '#25402f' },           // green (dark)
+          // Tolstoy & Dostoevsky -> burgundy
+          'War and Peace': { color: '#6e2230' },
+          'Anna Karenina': { color: '#6e2230' },
+          'The Brothers Karamazov': { color: '#6e2230' },
+          'The Idiot': { color: '#6e2230' },
+          'Notes from Underground': { color: '#6e2230' }
+        };
+
+        function overrideFor(title) {
+          if (BOOK_OVERRIDES[title]) return BOOK_OVERRIDES[title];
+          for (var key in BOOK_OVERRIDES) {
+            if (title.indexOf(key) !== -1) return BOOK_OVERRIDES[key];
+          }
+          return {};
+        }
+
+        // Trim series tags "(Foundation, #1)" and subtitles after a colon
+        // so the spine shows just the main title.
+        function spineTitle(title) {
+          return title.replace(/\s*\(.*?\)\s*/g, '').split(':')[0].trim();
+        }
+
+        // Turn the raw review (paragraphs separated by <br><br>, plus
+        // <blockquote> blocks) into clean <p>/<blockquote> blocks so every
+        // gap is one uniform margin instead of stacked line breaks.
+        function tidyReview(html) {
+          var MARK = '\u0001';
+          // Isolate each blockquote, stripping the <br>s that hug it.
+          html = html.replace(
+            /(?:<br\s*\/?>\s*)*(<blockquote[\s\S]*?<\/blockquote>)(?:\s*<br\s*\/?>)*/gi,
+            MARK + '$1' + MARK
+          );
+          var out = '';
+          html.split(MARK).forEach(function (chunk) {
+            var trimmed = chunk.trim();
+            if (!trimmed) return;
+            if (/^<blockquote/i.test(trimmed)) {
+              out += trimmed;
+            } else {
+              trimmed.split(/(?:<br\s*\/?>\s*){2,}/i).forEach(function (para) {
+                para = para.replace(/^(?:<br\s*\/?>\s*)+|(?:<br\s*\/?>\s*)+$/gi, '').trim();
+                if (para) out += '<p>' + para + '</p>';
+              });
+            }
+          });
+          return out || '<p>' + html + '</p>';
+        }
+
+        function starString(rating) {
+          var full = '\u2605';
+          var empty = '\u2606';
+          var out = '';
+          for (var i = 1; i <= 5; i++) out += (i <= rating ? full : empty);
+          return out;
+        }
+
+        function el(tag, className, text) {
+          var node = document.createElement(tag);
+          if (className) node.className = className;
+          if (text != null) node.textContent = text;
+          return node;
+        }
+
+        BOOKS.forEach(function (book, index) {
+          var ov = overrideFor(book.title);
+          var isEveryman = ov.everyman !== undefined ? ov.everyman : true;
+          var cloth = ov.color || (isEveryman ? EVERYMAN_SCARLET : book.color);
+
+          var spine = document.createElement('button');
+          spine.setAttribute('type', 'button');
+          spine.setAttribute('aria-label', book.title + ' by ' + book.author);
+          spine.style.setProperty('--cloth', cloth);
+          // Everyman's hardcovers get a thicker floor so the horizontal gold label stays legible.
+          var width = isEveryman ? Math.max(64, book.thickness) : book.thickness;
+          spine.style.width = width + 'px';
+
+          if (isEveryman) {
+            spine.className = 'book-spine everyman';
+            var label = el('div', 'spine-label');
+            label.appendChild(el('span', 'spine-author', book.author));
+            label.appendChild(el('span', 'spine-emblem', '\u273A')); // sunburst
+            label.appendChild(el('span', 'spine-title', spineTitle(book.title)));
+            spine.appendChild(label);
+            spine.appendChild(el('span', 'spine-brand', "Everyman's Library"));
+          } else {
+            spine.className = 'book-spine modern';
+            spine.appendChild(el('span', 'spine-title-modern', spineTitle(book.title)));
+            spine.appendChild(el('span', 'spine-author-modern', book.author));
+          }
+
+          spine.addEventListener('click', function () { openBookModal(index); });
+          shelf.appendChild(spine);
+        });
+
+        // Pager: scroll the single row left/right and toggle the controls.
+        var prevBtn = document.getElementById('shelfPrev');
+        var nextBtn = document.getElementById('shelfNext');
+
+        function pageScroll(direction) {
+          var step = Math.max(220, Math.round(shelf.clientWidth * 0.8));
+          shelf.scrollBy({ left: direction * step, behavior: 'smooth' });
+        }
+
+        function updatePagers() {
+          var maxScroll = shelf.scrollWidth - shelf.clientWidth;
+          if (prevBtn) prevBtn.disabled = shelf.scrollLeft <= 2;
+          if (nextBtn) nextBtn.disabled = shelf.scrollLeft >= maxScroll - 2;
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function () { pageScroll(-1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { pageScroll(1); });
+        shelf.addEventListener('scroll', updatePagers, { passive: true });
+        window.addEventListener('resize', updatePagers);
+        window.addEventListener('load', updatePagers);
+        updatePagers();
+
+        window.openBookModal = function (index) {
+          var book = BOOKS[index];
+          document.getElementById('bookModalTitle').textContent = book.title;
+          document.getElementById('bookModalAuthor').textContent = 'by ' + book.author;
+
+          var metaParts = [];
+          if (book.year) metaParts.push('Published ' + book.year);
+          if (book.pages) metaParts.push(book.pages + ' pages');
+          if (book.yearRead) metaParts.push('Read ' + book.yearRead);
+          document.getElementById('bookModalMeta').textContent = metaParts.join('  \u00b7  ');
+
+          var stars = document.getElementById('bookModalStars');
+          stars.textContent = starString(book.rating);
+          stars.setAttribute('title', book.rating + ' / 5');
+
+          var cover = document.getElementById('bookModalCover');
+          cover.src = book.cover;
+          cover.alt = 'Cover of ' + book.title;
+          document.getElementById('bookModalCoverLink').href = book.link;
+
+          var review = document.getElementById('bookModalReview');
+          if (book.review && book.review.trim().length) {
+            review.innerHTML = tidyReview(book.review);
+            review.classList.remove('no-review');
+          } else {
+            review.innerHTML = "I haven't written a review for this one yet \u2014 just a " + book.rating + "-star rating.";
+            review.classList.add('no-review');
+          }
+
+          document.getElementById('bookModalLink').href = book.link;
+          document.getElementById('bookModal').style.display = 'block';
+        };
+
+        window.closeBookModal = function () {
+          document.getElementById('bookModal').style.display = 'none';
+        };
+
+        window.addEventListener('click', function (event) {
+          var modal = document.getElementById('bookModal');
+          if (event.target === modal) closeBookModal();
+        });
+        window.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') closeBookModal();
+        });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var CHANNEL_ID = 'UC8KnnxrtI9WhmjZPdQ6pxMA';
+        var FEED_URL = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+        var grid = document.getElementById('youtube-grid');
+
+        function videoIdFrom(str) {
+          if (!str) return '';
+          var m = str.match(/yt:video:([\w-]+)/) ||
+                  str.match(/[?&]v=([\w-]+)/) ||
+                  str.match(/\/(?:shorts|embed|v)\/([\w-]+)/);
+          return m ? m[1] : '';
+        }
+
+        // Primary source: rss2json (CORS-enabled JSON of the channel feed).
+        // It reflects the live feed, so newly published videos appear here
+        // automatically with no build step.
+        function fetchViaRss2Json() {
+          var url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED_URL);
+          return fetch(url)
+            .then(function (r) { if (!r.ok) throw new Error('bad status'); return r.json(); })
+            .then(function (data) {
+              if (!data || data.status !== 'ok' || !data.items) throw new Error('bad payload');
+              return data.items.map(function (it) {
+                return {
+                  id: videoIdFrom(it.guid) || videoIdFrom(it.link),
+                  title: it.title || '',
+                  published: it.pubDate || ''
+                };
+              }).filter(function (v) { return v.id; });
+            });
+        }
+
+        // Fallback: fetch the raw feed XML through a generic CORS proxy.
+        function fetchViaProxyXml() {
+          var url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(FEED_URL);
+          return fetch(url)
+            .then(function (r) { if (!r.ok) throw new Error('bad status'); return r.text(); })
+            .then(function (text) {
+              var doc = new DOMParser().parseFromString(text, 'text/xml');
+              var entries = doc.getElementsByTagName('entry');
+              var videos = [];
+              for (var i = 0; i < entries.length; i++) {
+                var e = entries[i];
+                var idEl = e.getElementsByTagName('yt:videoId')[0];
+                var id = idEl ? idEl.textContent : '';
+                if (!id) continue;
+                var titleEl = e.getElementsByTagName('title')[0];
+                var pubEl = e.getElementsByTagName('published')[0];
+                videos.push({
+                  id: id,
+                  title: titleEl ? titleEl.textContent : '',
+                  published: pubEl ? pubEl.textContent : ''
+                });
+              }
+              if (!videos.length) throw new Error('no entries');
+              return videos;
+            });
+        }
+
+        function formatDate(iso) {
+          if (!iso) return '';
+          var d = new Date(iso);
+          if (isNaN(d)) return '';
+          return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function render(videos) {
+          grid.innerHTML = '';
+          videos.forEach(function (v) {
+            var card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'yt-card';
+            card.setAttribute('aria-label', 'Play: ' + v.title);
+            card.onclick = function () { openYouTubeModal(v.id); };
+
+            var thumb = document.createElement('div');
+            thumb.className = 'yt-thumb';
+            var img = document.createElement('img');
+            img.loading = 'lazy';
+            img.src = 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg';
+            img.alt = v.title;
+            var play = document.createElement('span');
+            play.className = 'yt-play';
+            thumb.appendChild(img);
+            thumb.appendChild(play);
+
+            var meta = document.createElement('div');
+            meta.className = 'yt-meta';
+            var title = document.createElement('div');
+            title.className = 'yt-title';
+            title.textContent = v.title;
+            var date = document.createElement('div');
+            date.className = 'yt-date';
+            date.textContent = formatDate(v.published);
+            meta.appendChild(title);
+            meta.appendChild(date);
+
+            card.appendChild(thumb);
+            card.appendChild(meta);
+            grid.appendChild(card);
+          });
+        }
+
+        function showFallback() {
+          grid.innerHTML = '<p class="yt-fallback">Couldn\u2019t load the latest videos right now. ' +
+            '<a href="https://www.youtube.com/@m_k_lyons/videos">Watch them on YouTube &rarr;</a></p>';
+        }
+
+        window.openYouTubeModal = function (id) {
+          var frame = document.getElementById('youtubeFrame');
+          frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
+          document.getElementById('youtubeModal').style.display = 'block';
+        };
+
+        window.closeYouTubeModal = function () {
+          document.getElementById('youtubeModal').style.display = 'none';
+          document.getElementById('youtubeFrame').src = '';
+        };
+
+        window.addEventListener('click', function (event) {
+          var modal = document.getElementById('youtubeModal');
+          if (event.target === modal) closeYouTubeModal();
+        });
+        window.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') closeYouTubeModal();
+        });
+
+        if (grid) {
+          fetchViaRss2Json()
+            .catch(fetchViaProxyXml)
+            .then(function (videos) {
+              if (videos && videos.length) render(videos);
+              else showFallback();
+            })
+            .catch(showFallback);
+        }
+      })();
+    </script>
   </body>
 </html>

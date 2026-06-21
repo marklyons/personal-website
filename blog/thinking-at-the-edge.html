@@ -1,0 +1,175 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../stylesheet.css">
+    <title>Thinking at the edge</title>
+
+    <!-- Open Graph meta tags for social media sharing -->
+    <meta property="og:title" content="Thinking at the edge">
+    <meta property="og:description" content="Getting locked out of a BitLocker laptop with a frozen keyboard brought back a feeling I hadn't had since LLMs took over my workflow: the satisfaction of thinking at the edge of a hard problem.">
+    <meta property="og:image" content="images/bitlocker-recovery-screen.png">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="thinking-at-the-edge.html">
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Thinking at the edge">
+    <meta name="twitter:description" content="Getting locked out of a BitLocker laptop with a frozen keyboard brought back a feeling I hadn't had since LLMs took over my workflow: the satisfaction of thinking at the edge of a hard problem.">
+    <meta name="twitter:image" content="images/bitlocker-recovery-screen.png">
+
+    <!-- Additional meta tags -->
+    <meta name="description" content="Getting locked out of a BitLocker laptop with a frozen keyboard brought back a feeling I hadn't had since LLMs took over my workflow: the satisfaction of thinking at the edge of a hard problem.">
+    <meta name="author" content="Mark Lyons">
+  </head>
+  <body>
+    <div class="container">
+      <a class="home-link" href="../index.html">&larr; Home</a>
+      <h1>Thinking at the edge</h1>
+      <span class="blog-subline">Posted June 21, 2026</span>
+
+      <div class="captioned-image-container">
+        <img src="images/bitlocker-recovery-screen.png" alt="The Windows BitLocker recovery screen asking for the recovery key for the drive."/>
+        <div class="caption">The Bitlocker recovery screen.</div>
+      </div>
+      <p>
+        A while ago at work I ran into a situation with a locked Razer laptop that was secured with BitLocker. Put more plainly, I locked myself out of my own work laptop by entering the wrong password too many times. HR sent me a 48-digit recovery key. When I went to enter the recovery key, I discovered that the keyboard was totally frozen. After a little bit of wrestling with this issue, I had compiled a list of things that didn&rsquo;t work: fiddling with keyboard settings in BIOS, recovery mode, a USB wired keyboard -- there was no state in which I could have access to the keyboard, and also get a chance to enter the BitLocker recovery key.
+      </p>
+      <p>
+        This went on for some time but it wasn&rsquo;t too pressing as I had another machine for development work. This locked laptop was basically only useful for note-taking in meetings. It was mostly just embarrassing that I had a locked laptop.
+      </p>
+      <p>
+        Online information was actually plentiful, but not helpful. Forum posts indicated that this was a pervasive issue with this brand of laptops. When I asked LLMs, they just found the same forum and customer support posts I had already read, and would suggest the same things repeatedly. I unsuccessfully tried to prompt the LLMs to think more from first principles, because clearly the available discussion material did not contain a solution as both of us had combed all of them with no solution in sight.
+      </p>
+      <p>
+        At some point I realized that I could access a terminal within the Windows recovery flow, but of course I still didn&rsquo;t have access to my keyboard, so this had long been considered a dead-end.
+      </p>
+
+      <div class="captioned-image-container">
+        <img src="images/manage-bde-command-prompt.png" alt="A Windows Administrator Command Prompt running the manage-bde BitLocker command."/>
+        <div class="caption">A terminal accessible inside the Windows recovery flow.</div>
+      </div>
+      <p>
+        I sat looking at the blinking text cursor and suddenly an idea hit me: Let&rsquo;s see if I get a clipboard here... probably, right? Highlight &lsquo;Windows&rsquo; with my mouse, right click to copy, right click again and there it is: &lsquo;Windows&rsquo; pasted there on the command line. This could be it! One more thing I need, how do I get an enter press? I tested with a new line above and&hellip;
+      </p>
+      <pre class="terminal">'Windows' is not recognized as an internal or external command,
+operable program or batch file.</pre>
+      <p>
+        And that&rsquo;s it! With just this information I knew that I could get this recovery key entered. It would be a little arduous, but I was pretty excited by this. What was striking was that this silly trick was more exciting for me than a lot of problem-solving I had encountered in day to day development work in a long time.
+      </p>
+      <p>
+        The BitLocker recovery command looks something like:
+      </p>
+      <pre class="terminal">manage-bde -unlock D: -RecoveryPassword 123456-123456-123456-123456-123456-123456-123456-123456</pre>
+      <p>
+        I have a lot of what I need already! I can get &lsquo;manage__de&rsquo; from just the initial prompt:
+      </p>
+      <pre class="terminal">Microsoft Wi<mark>n</mark>dows [V<mark>e</mark>rsion 10.0.xxxxx.xxxx]
+(c) Microsoft Corpor<mark>a</mark>tion. All ri<mark>g</mark>hts reserve<mark>d</mark>.
+
+C:\Windows\Syste<mark>m</mark>32&gt;</pre>
+      <p>
+        How do I get a lowercase &lsquo;b&rsquo; and a hyphen? I can get hyphen from date:
+      </p>
+      <pre class="terminal">C:\Windows\System32&gt; date
+The current date is: Sun 06/07/2026
+Enter the new date: (mm-dd-yy)</pre>
+      <p>
+        That was the process I followed: taking the set of characters I did have, to construct commands that could give me what I needed. If I recall correctly, the last big hurdle was making sure I had all of the right numbers and potentially uppercase letters for the recovery key.
+      </p>
+      <p>
+        When I finally had the entire command entered, and pasted the newline and saw my laptop freed up again, it was genuinely a rush that I used to feel frequently when building software.
+      </p>
+      <p>
+        The whole reason I&rsquo;m writing about this is because it felt like a problem solving journey with a satisfying solution that I just haven&rsquo;t felt since LLM based workflows became commonly used tools for me.
+      </p>
+      <p>
+        When I started writing code around 2008, I had many thousands of those moments ahead of me where something actually starts working. The feeling of being at the edge of a problem you need to solve, and trying different things to understand the nature of the problem, the scope of the disconnect between the behavior you are looking for and what is currently happening, and finally matching that gap with a solution is what this career has always been about to me.
+      </p>
+      <p>
+        I can vividly remember overhearing a conversation with the CEO of a startup I interned with in high school about how LinkedIn data was necessary for a customer demo the following week, and hearing the CTO tell him that it was impossible without paying their exorbitant API fees. Regardless of whether or not that was altogether the truth, I spent the weekend at home writing a web scraper that needed Selenium support to get around LinkedIn&rsquo;s very creative anti-web scraping safeguards. There was a collapsed panel that contained data that was essential to what the company needed for this demo. I assumed it must live in the HTML somewhere, right? Wrong. It did not make the server request for that data until you actually collapsed the panel. I don&rsquo;t remember why the endpoint was so inaccessible that I tried a different approach, but I will always remember coding Selenium to click that panel and get the data and watching it drop it into the CSV for the first time.
+      </p>
+      <p>
+        There were simpler versions, like actually getting the QR code scanner to connect to the Electron app I built for a project I once hoped would become a company.
+      </p>
+      <p>
+        There are more serious versions, like discovering that my solution to a data passback optimization finally worked, while working at a big tech company and later seeing the very serious money it led to for the company. Scale made these problems more fun for sure but it really didn&rsquo;t matter. Those moments of satisfaction with your solution were special, regardless of the circumstances. They were the reward for the patience you spent in logs, the thought put into debugging, and the flashes of &ldquo;what if I just tried&hellip;&rdquo; that you later learned to never ignore.
+      </p>
+      <p>
+        Since the rise of intensive LLM usage in engineering workflows, I have done what software engineers have been trained to do for a long time, I adapted to the latest set of tools. Everyone knows that these tools felt invigorating initially, in a manner that is very similar to what I have been describing. One of the beautiful things about this method of building is that more people can know this feeling that I&rsquo;m talking about.
+      </p>
+      <p>
+        I don&rsquo;t think the story is that simple though. We all know that the initial invigoration of AI-assisted building tends to taper off as the product gets more complex and many smart people are working on the problems inside that problem, including the big labs themselves. What&rsquo;s more compelling to me is the worry that if you aren&rsquo;t present for the thinking involved in getting to the edge, that you can never produce those insights that lead to novel solutions that frequently occur at the edge.
+      </p>
+
+      <div class="captioned-image-container centered">
+        <img src="images/wall-e-buy-n-large.png" alt="A still from the film WALL-E showing a human reclining on a hover-chair, absorbed in a screen held in front of their face."/>
+        <div class="caption">A future image of me using GPT-150 to build a CRUD app</div>
+      </div>
+      <p>
+        I keep thinking of how the LLMs were incapable of thinking from first principles and outside of the forum posts I had already read during my Bitlocker issue. It reminds me of all of the times I simply ran out of StackOverflow questions, blog posts. I would Google again and be met with a sea of purple links and look again at one of them to see if there was something I missed. The solution could come to me in the morning almost immediately after waking, or while taking a walk thinking about something else entirely.
+      </p>
+      <p>
+        I personally think that these &ldquo;Aha!&rdquo; moments have led to some of the best inventions, solutions, optimizations, etc. in engineering broadly. They have given me the most satisfaction in my career and helped me build and fix a lot in my life.
+      </p>
+      <p>
+        Psychologists call this incubation. Whatever the mechanism, those moments seem to require spending enough time with a problem that it becomes part of your internal landscape. I think this would be a fascinating focus for mechanistic interpretability researchers.
+      </p>
+      <p>
+        To close, <b>if engineering becomes increasingly about selecting, editing, and validating generated solutions, what happens to the conditions that historically produced deep understanding and insight?</b> I personally am working on refining my approach to writing code with modern workflows so that I do not stop thinking at the edge.
+      </p>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+      <div class="image-modal-content">
+        <span class="image-close-button" onclick="closeImageModal()">&times;</span>
+        <img id="modalImage" src="" alt="Full size image">
+        <div id="modalCaption" class="image-modal-caption"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const captionedImages = document.querySelectorAll('.captioned-image-container img');
+
+        captionedImages.forEach(img => {
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', function() {
+            openImageModal(this.src, this.alt);
+          });
+        });
+      });
+
+      function openImageModal(imageSrc, imageAlt) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        modalImg.src = imageSrc;
+        modalImg.alt = imageAlt;
+
+        const captionElement = modalImg.parentElement.parentElement.querySelector('.caption');
+        if (captionElement) {
+          modalCaption.textContent = captionElement.textContent;
+        } else {
+          modalCaption.textContent = imageAlt;
+        }
+
+        modal.style.display = 'block';
+      }
+
+      function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+      }
+
+      window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target == modal) {
+          closeImageModal();
+        }
+      }
+    </script>
+  </body>
+</html>
