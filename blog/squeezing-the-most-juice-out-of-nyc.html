@@ -236,6 +236,14 @@
           closeVideoModal();
         }
       }
+
+      // Close modals with the Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeImageModal();
+          closeVideoModal();
+        }
+      });
     </script>
   </body>
 </html>

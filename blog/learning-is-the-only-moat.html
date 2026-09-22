@@ -8,13 +8,15 @@
     <!-- Open Graph meta tags for social media sharing -->
     <meta property="og:title" content="Learning is the only moat">
     <meta property="og:description" content="A job search reminded me how much there still is to learn. On why deep understanding -- not AI shortcuts -- remains the real edge in engineering, interviews, and startups.">
+    <meta property="og:image" content="images/coding-books-stack.png">
     <meta property="og:type" content="article">
     <meta property="og:url" content="learning-is-the-only-moat.html">
 
     <!-- Twitter Card meta tags -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Learning is the only moat">
     <meta name="twitter:description" content="A job search reminded me how much there still is to learn. On why deep understanding -- not AI shortcuts -- remains the real edge in engineering, interviews, and startups.">
+    <meta name="twitter:image" content="images/coding-books-stack.png">
 
     <!-- Additional meta tags -->
     <meta name="description" content="A job search reminded me how much there still is to learn. On why deep understanding -- not AI shortcuts -- remains the real edge in engineering, interviews, and startups.">
@@ -26,6 +28,10 @@
       <h1>Learning is the only moat</h1>
       <span class="blog-subline">Posted September 22, 2026</span>
 
+      <div class="captioned-image-container">
+        <img src="images/coding-books-stack.png" alt="A stack of software engineering books including Head First C#, Kotlin in Action, Ruby on Rails Tutorial, Clean Architecture, Effective Kotlin, Designing Data-Intensive Applications, System Design Interview, The Pragmatic Programmer, and Cracking the Coding Interview."/>
+        <div class="caption">Revisiting the sacred texts.</div>
+      </div>
       <p>
         Having just gone through an extensive job search process, I cracked open all the old books and online tomes of advice. Algorithms, data structures, system design, behavioral, interview process &ndash; it all comes flying back to me. Not necessarily just recollection of topics where I&rsquo;ve already spent a lot of time refining my understanding, but I&rsquo;m once again encountering a much broader point that is almost shouting at me: &ldquo;There is still so much I need to learn.&rdquo;
       </p>
@@ -33,7 +39,7 @@
         Once I got past the usual jitters of ensuring I wont be caught off guard not knowing basic stuff I really should&rsquo;ve had cemented permanently in my brain in CS132 many years ago, and actually start recalling some tougher algorithmic questions, I get back to my former frontier and remember how beautiful it is to look out on that frontier.
       </p>
       <p>
-        The field really is fascinating and rewarding still, despite what people may say in the age of constant AI discussion. Every rabbit hole you can go down is extremely tempting, but the information is right at your fingertips (even now moreso with the aforementioned AI boom) and immediately useful. You can go down the path of learning a new language deeply. Engineers who know C++ deeply are still in demand for quant and machine learning roles that command elite compensation. ML/AI focus is still rewarded with high interest in the job market &ndash; you have not missed the bus and you can still dive deeply into that subfield, provided you simply have the dedication to learn. There is even still value in learning Leetcode and system design purely from an interview perspective, it is possible to get to a point where you just wont fail almost any reasonable technical interview. Imagine how much that could change your career, if any time a recruiter drops into your inbox at a company that intrigues you, you can factor in a high probability of getting an offer.
+        The field really is fascinating and rewarding still, despite what people may say in the age of constant AI discussion. Every rabbit hole you can go down is extremely tempting, but the information is right at your fingertips (even now moreso with the aforementioned AI boom) and immediately useful. You can go down the path of learning a new language deeply. Engineers who know C++ deeply are still in demand for quant and machine learning roles that command elite compensation. ML/AI focus is still rewarded with high interest in the job market &ndash; <a href="https://vladfeinberg.com/2026/05/10/how-to-land-a-job-at-a-frontier-lab.html" target="_blank" rel="noopener">you have not missed the bus</a> and you can still dive deeply into that subfield, provided you simply have the dedication to learn. There is even still value in learning Leetcode and system design purely from an interview perspective, it is possible to get to a point where you just wont fail almost any reasonable technical interview. Imagine how much that could change your career, if any time a recruiter drops into your inbox at a company that intrigues you, you can factor in a high probability of getting an offer.
       </p>
       <p>
         Startups are not crowded either. Every day I see a new startup doing something that they will probably be doing many years from now. AI tooling has made code cheap, but it actually underlines the value in deeply understanding an industry and problem space to build a unique tool that solves a problem. The commonality is still your ability to focus, learn, and understand.
@@ -42,5 +48,59 @@
         The reason I feel compelled to say this is the malaise in the field around the changes presented by AI is palpable, and I&rsquo;ve felt it myself at times. &ldquo;Why learn X? AI can just do it better,&rdquo; is a common sentiment I&rsquo;ve been hearing for the past two years. Doing is not understanding. There is still enormous value in diving deep into something to learn, and the utility of doing so will only become more pronounced as more people around you fall victim to that malaise. You want to be the person who still understands the fundamentals, who has still spent the weekends diving deep into a niche topic that interests you that becomes suddenly marketable with a shift in the field. While you&rsquo;re being that person, your competition in the job market, in business generally, is probably moving backwards if they subscribe to the defeatist attitude around them, as the AI tooling will let them understand less and less.
       </p>
     </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+      <div class="image-modal-content">
+        <span class="image-close-button" onclick="closeImageModal()">&times;</span>
+        <img id="modalImage" src="" alt="Full size image">
+        <div id="modalCaption" class="image-modal-caption"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const captionedImages = document.querySelectorAll('.captioned-image-container img');
+
+        captionedImages.forEach(img => {
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', function() {
+            const captionElement = this.parentElement.querySelector('.caption');
+            const caption = captionElement ? captionElement.textContent : this.alt;
+            openImageModal(this.src, this.alt, caption);
+          });
+        });
+      });
+
+      function openImageModal(imageSrc, imageAlt, caption) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        modalImg.src = imageSrc;
+        modalImg.alt = imageAlt;
+        modalCaption.textContent = caption || imageAlt;
+
+        modal.style.display = 'block';
+      }
+
+      function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+      }
+
+      window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target == modal) {
+          closeImageModal();
+        }
+      }
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeImageModal();
+        }
+      });
+    </script>
   </body>
 </html>

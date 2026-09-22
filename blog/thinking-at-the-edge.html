@@ -166,6 +166,12 @@ Enter the new date: (mm-dd-yy)</pre>
           closeImageModal();
         }
       }
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeImageModal();
+        }
+      });
     </script>
   </body>
 </html>
