@@ -2,6 +2,34 @@
 // Source: https://www.goodreads.com/user/show/190975958-mark-lyons
 const BOOKS = [
   {
+    "title": "No Country for Old Men",
+    "author": "Cormac McCarthy",
+    "rating": 5,
+    "review": "First read of a Cormac McCarthy book and I think I'll probably pick up another after this. The dialogue flows so well. The book has a true villain and no true heroes as far as I can tell, and I think McCarthy may be saying something there about the reality of how these things actually work out. The closest character to a hero constantly doubts whether he is one, whereas the villain never questions who he is and likely doesn't even think of what he does as good or bad. <br /><br />I don't know if there is some greater point I was supposed to take away from this story. There is a passage towards the end about one character's relationship with his father that seemed like it could've been very poignant if I understood how it was connected to the rest of the story. It wasn't clear to me, but I did appreciate the beauty of what was said. <br /><br />At times some of the \"smartass with a southern accent\" dialogue can be a bit tiresome (albeit charming, especially in the beginning) as there are a few characters that have the same speaking style and manner of joking/riffing/etc. I understand why it is prominently featured in the book though, as the characters would necessarily have had to find a way to discuss gruesome events with some levity but maintaining respect for victims.<br /><br />Maybe that does give me a handle on what the takeaway should be -- the feeling that everywhere, there are all these people constantly keeping things in check in a very self sacrificial way that you may never notice. The American Southwest is vast and profoundly empty especially when traveling by road, but it's not really empty. When I traveled through by motorcycle I was approaching a long stretch without gas stations and I was running low. I had to wake up a gas station owner because it was starting to get dark and he had gone to sleep in his house next to the station. He was mad at me because I only had a little cash but I think he still gave me a little extra so I could make it through. There are people there, waking up every day and doing their job, even if it's difficult work that you can never really finish. You might think a house is abandoned but there's someone inside sleeping before their shift at the hospital. I don't want to add a spoiler, but now I see more connection there with the passage about the father-son relationship than I originally thought, and it applies to a lot more than just the American Southwest.<br /><br />Excellent book overall. Easy 5/5.",
+    "cover": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1740778210l/23515727._SY475_.jpg",
+    "link": "https://www.goodreads.com/review/show/8979992618",
+    "readAt": "Fri, 2 Oct 2026 00:00:00 +0000",
+    "year": "2005",
+    "pages": "309",
+    "color": "#4a2f22",
+    "thickness": 38,
+    "yearRead": "2026"
+  },
+  {
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "rating": 5,
+    "review": "I’ve been trying to go through “the classics” slowly and I typically have the impression that I missed them in some way when I was younger. First of all, I never read many of them then. But secondly, many of the great books I did read growing up, especially if they were required before showing up to 7th grade English, I sort of discount as something I really couldn’t have internalized well.<br /><br />I remember actually enjoying Brave New World when I first read it. As strange as it was, it really struck a nerve but I couldn’t tell you what nerve that was. On my recent reread, I came across the following passage:<br /><blockquote> The Savage shook his head. “It all seems to me quite horrible.”<br /><br />“Of course it does. Actual happiness always looks pretty squalid in comparison with the over-compensations for misery.<br /><br />And, of course, stability isn't nearly so spectacular as insta-bility. And being contented has none of the glamour of a good fight against misfortune, none of the picturesqueness of a struggle with temptation, or a fatal overthrow by passion or doubt. Happiness is never grand.\"</blockquote><br /><br />I realized that I may have carried something from this story that I didn’t place right away. I view almost everything as having a cost, even placid situations that seem perfect. There is always some cost you can find and there is a special beauty in that when you think about it long enough. I follow this view so much that I almost get excited when I am struck by misfortune because I feel confident that luck is right around the corner as a result. I am very cognizant of what ideologies I carry from different ancestors, friends, etc. and I’ve never been able to place this one. It seems very understandable to me that this one might have actually come from this book given when I originally read it.<br /><br />I think I was very struck by this idea of unrestricted pleasure, satisfaction, “happiness” as missing something unnamed yet important. Call it faith, spirit, something else, but it seems like you can’t skip it.<br /><br />For some reason I feel like I remember Bernard going on a violent spree in the end and really showing them the natural order of things, but I guess that does not happen.",
+    "cover": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1364250969l/17262158.jpg",
+    "link": "https://www.goodreads.com/review/show/8979882394",
+    "readAt": "",
+    "year": "1932",
+    "pages": "232",
+    "color": "#2f4858",
+    "thickness": 34,
+    "yearRead": ""
+  },
+  {
     "title": "Project Hail Mary",
     "author": "Andy Weir",
     "rating": 3,
